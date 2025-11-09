@@ -282,6 +282,18 @@ static USDC_SEI_TESTNET: Lazy<USDCDeployment> = Lazy::new(|| {
     })
 });
 
+
+static AO_TN1: Lazy<USDCDeployment> = Lazy::new(|| {
+    USDCDeployment(TokenDeployment {
+        asset: TokenAsset {
+            address: MixedAddress::Offchain("0syT13r0s0tgPmIed95bJnuSqaD29HQNN8D3ElLSrsc".to_string()),
+            network: Network::Ao,
+        },
+        decimals: 12,
+        eip712: None,
+    })
+});
+
 /// A known USDC deployment as a wrapper around [`TokenDeployment`].
 #[derive(Clone, Debug)]
 pub struct USDCDeployment(pub TokenDeployment);
@@ -329,7 +341,7 @@ impl USDCDeployment {
             Network::Polygon => &USDC_POLYGON,
             Network::Sei => &USDC_SEI,
             Network::SeiTestnet => &USDC_SEI_TESTNET,
-            Network::Ao => todo!()
+            Network::Ao => &AO_TN1
         }
     }
 }
