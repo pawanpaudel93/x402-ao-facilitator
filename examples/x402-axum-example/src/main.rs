@@ -29,7 +29,7 @@ async fn main() {
     let x402 = X402Middleware::try_from(facilitator_url)
         .unwrap()
         .with_base_url(url::Url::parse("https://localhost:3000/").unwrap());
-    let usdc_ao = USDCDeployment::by_network(Network::Ao).pay_to(MixedAddress::Offchain(
+    let ao_token = USDCDeployment::by_network(Network::Ao).pay_to(MixedAddress::Offchain(
         "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".to_string(),
     ));
 
@@ -49,7 +49,7 @@ async fn main() {
                         "type": "string",
                         "description": "VIP content response"
                     }))
-                    .with_price_tag(usdc_ao.amount("0.000000000001").unwrap()), // 1 winston unit in $AO
+                    .with_price_tag(ao_token.amount("0.000000000001").unwrap()), // 1 winston unit in $AO
             ),
         )
         .layer(
