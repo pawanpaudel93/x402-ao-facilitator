@@ -12,7 +12,7 @@ use tracing_opentelemetry::OpenTelemetrySpanExt;
 use x402_axum::{IntoPriceTag, X402Middleware};
 use x402_rs::network::{Network, USDCDeployment};
 use x402_rs::telemetry::Telemetry;
-use x402_rs::{address_evm, address_sol};
+use x402_rs::types::MixedAddress;
 
 #[tokio::main]
 async fn main() {
@@ -24,15 +24,14 @@ async fn main() {
         .register();
 
     let facilitator_url =
-        env::var("FACILITATOR_URL").unwrap_or_else(|_| "https://facilitator.x402.rs".to_string());
+        env::var("FACILITATOR_URL").unwrap_or_else(|_| "http://localhost:8080".to_string());
 
     let x402 = X402Middleware::try_from(facilitator_url)
         .unwrap()
         .with_base_url(url::Url::parse("https://localhost:3000/").unwrap());
-    let usdc_base_sepolia = USDCDeployment::by_network(Network::BaseSepolia)
-        .pay_to(address_evm!("0xBAc675C310721717Cd4A37F6cbeA1F081b1C2a07"));
-    let usdc_solana = USDCDeployment::by_network(Network::Solana)
-        .pay_to(address_sol!("EGBQqKn968sVv5cQh5Cr72pSTHfxsuzq7o7asqYB5uEV"));
+    let usdc_ao = USDCDeployment::by_network(Network::Ao).pay_to(MixedAddress::Offchain(
+        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".to_string(),
+    ));
 
     let app = Router::new()
         .route(
@@ -50,62 +49,7 @@ async fn main() {
                         "type": "string",
                         "description": "VIP content response"
                     }))
-                    .with_price_tag(usdc_solana.amount(0.0025).unwrap())
-                    .or_price_tag(usdc_base_sepolia.amount(0.0025).unwrap()),
-            ),
-        )
-        .route(
-            "/api/weather",
-            get(weather_handler).layer(
-                x402.with_description("Weather API - Public endpoint with query params")
-                    .with_mime_type("application/json")
-                    .with_input_schema(serde_json::json!({
-                        "type": "http",
-                        "method": "GET",
-                        "discoverable": true,
-                        "queryParams": {
-                            "location": {
-                                "type": "string",
-                                "description": "City name or coordinates",
-                                "required": true
-                            },
-                            "units": {
-                                "type": "string",
-                                "enum": ["metric", "imperial"],
-                                "default": "metric"
-                            }
-                        }
-                    }))
-                    .with_output_schema(serde_json::json!({
-                        "type": "object",
-                        "properties": {
-                            "temperature": { "type": "number", "description": "Current temperature" },
-                            "conditions": { "type": "string", "description": "Weather conditions" },
-                            "humidity": { "type": "number", "description": "Humidity percentage" }
-                        },
-                        "required": ["temperature", "conditions"]
-                    }))
-                    .with_price_tag(usdc_base_sepolia.amount(0.001).unwrap()),
-            ),
-        )
-        .route(
-            "/api/internal",
-            get(internal_handler).layer(
-                x402.with_description("Internal API - Private endpoint")
-                    .with_mime_type("application/json")
-                    .with_input_schema(serde_json::json!({
-                        "type": "http",
-                        "method": "GET",
-                        "discoverable": false,
-                        "description": "Internal admin functions - direct access only"
-                    }))
-                    .with_output_schema(serde_json::json!({
-                        "type": "object",
-                        "properties": {
-                            "status": { "type": "string" }
-                        }
-                    }))
-                    .with_price_tag(usdc_base_sepolia.amount(1.00).unwrap()),
+                    .with_price_tag(usdc_ao.amount("0.000000000001").unwrap()), // 1 winston unit in $AO
             ),
         )
         .layer(

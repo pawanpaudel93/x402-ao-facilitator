@@ -105,7 +105,8 @@ impl AoProvider {
             chain,
         })
     }
-
+    // dumb placeholder for backward compatibility
+    // settling messages on ao (ANS-104 dataitems) doesnt require signing txs
     pub fn signer_address(&self) -> MixedAddress {
         MixedAddress::Offchain("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".to_string())
     }

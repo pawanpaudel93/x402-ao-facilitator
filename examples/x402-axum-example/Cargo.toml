@@ -12,6 +12,7 @@ axum = { version = "0.8.4" }
 tokio = { version = "1.45.0" }
 dotenvy = { version = "0.15.7" }
 serde_json = { version = "1.0" }
+anyhow = {version = "1.0.100"}
 
 # Tracing and OpenTelemetry
 tracing = { version = "0.1.41" }
@@ -19,3 +20,6 @@ opentelemetry = { version = "0.30.0" }
 tower-http = { version = "0.6.4" }
 tracing-opentelemetry = { version = "0.31.0" }
 url = { version = "2.5.4" }
+base64 = { version = "0.22" }
+bundles_rs = { git = "https://github.com/loadnetwork/bundles-rs", branch = "main" }
+reqwest = { version = "0.12.15", default-features = false, features = ["json", "rustls-tls"] }

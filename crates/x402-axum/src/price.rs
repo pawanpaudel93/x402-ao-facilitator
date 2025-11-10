@@ -197,7 +197,7 @@ where
 {
     /// Adds or replaces the `pay_to` address in [`PriceTagBuilder`].
     #[allow(dead_code)] // Public for consumption by downstream crates.
-    pub fn pay_to<P1: TryInto<EvmAddress>>(&self, address: P1) -> PriceTagBuilder<A, P1> {
+    pub fn pay_to<P1: Into<MixedAddress>>(&self, address: P1) -> PriceTagBuilder<A, P1> {
         PriceTagBuilder {
             token: self.token.clone(),
             amount: self.amount.clone(),
