@@ -24,12 +24,18 @@ async fn main() {
         .register();
 
     let facilitator_url =
-        env::var("FACILITATOR_URL").unwrap_or_else(|_| "https://hyper-x402.load.network".to_string()); // http://localhost:8080
+    // locally http://localhost:8080
+        env::var("FACILITATOR_URL").unwrap_or_else(|_| "https://hyper-x402.load.network".to_string()); 
 
     let x402 = X402Middleware::try_from(facilitator_url)
         .unwrap()
         .with_base_url(url::Url::parse("https://localhost:3000/").unwrap());
-    let ao_token = USDCDeployment::by_network(Network::Ao).pay_to(MixedAddress::Offchain(
+    
+    // let ao_token = USDCDeployment::by_network(Network::Ao).pay_to(MixedAddress::Offchain(
+    //     "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".to_string(),
+    // ));
+
+    let ao_token = USDCDeployment::by_ao_network("AO").pay_to(MixedAddress::Offchain(
         "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".to_string(),
     ));
 
