@@ -10,6 +10,15 @@ This repository comes with a tailored axum example that works with the ao networ
         "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".to_string(),
     ));
 ```
+
+it's also possible to define a token struct instance on ao without being tied to $AO as payment token (default instance), by using the by_ao_network function, at the moment only `AO`, `USDA` and `ARIO` are supported
+
+```rust
+    let usda_token = USDCDeployment::by_ao_network("USDA").pay_to(MixedAddress::Offchain(
+        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".to_string(),
+    ));
+```
+
 * the route `/protected-route` is protected with a cost of `0.000000000001` $AO
 * it's required to have a wallet JWK saved in the `./wallet.json` file location (gitignored - use burner!!) in order to complete the test flow (required balance >= 0.000000000001 AO)
 

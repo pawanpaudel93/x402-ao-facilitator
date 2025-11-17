@@ -154,11 +154,13 @@ impl AoProvider {
             FacilitatorLocalError::DecodingError(format!("invalid ANS-104 dataitem: {e}"))
         })?;
 
-    let encoded_target = data_item
-        .target
-        .as_ref()
-        .map(|target| URL_SAFE_NO_PAD.encode(target))
-        .ok_or_else(|| FacilitatorLocalError::DecodingError(format!("dataitem missing target field")))?;
+        let encoded_target = data_item
+            .target
+            .as_ref()
+            .map(|target| URL_SAFE_NO_PAD.encode(target))
+            .ok_or_else(|| {
+                FacilitatorLocalError::DecodingError(format!("dataitem missing target field"))
+            })?;
 
         let payer = MixedAddress::Offchain(encoded_target);
         self.validate_data_item(&data_item, requirements, &payer)?;
@@ -175,11 +177,13 @@ impl AoProvider {
         requirements: &PaymentRequirements,
         payer: &MixedAddress,
     ) -> Result<(), FacilitatorLocalError> {
-    let encoded_target = data_item
-        .target
-        .as_ref()
-        .map(|target| URL_SAFE_NO_PAD.encode(target))
-        .ok_or_else(|| FacilitatorLocalError::DecodingError(format!("dataitem missing target field")))?;
+        let encoded_target = data_item
+            .target
+            .as_ref()
+            .map(|target| URL_SAFE_NO_PAD.encode(target))
+            .ok_or_else(|| {
+                FacilitatorLocalError::DecodingError(format!("dataitem missing target field"))
+            })?;
 
         let expected_asset = expect_offchain(&requirements.asset, "asset")?;
         if encoded_target != expected_asset {

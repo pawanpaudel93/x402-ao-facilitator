@@ -308,6 +308,21 @@ static AO_USDA: Lazy<USDCDeployment> = Lazy::new(|| {
     })
 });
 
+static AO_ARIO: Lazy<USDCDeployment> = Lazy::new({
+    || {
+        USDCDeployment(TokenDeployment {
+            asset: TokenAsset {
+                address: MixedAddress::Offchain(
+                    "qNvAoz0TgcH7DMg8BCVn8jF32QH5L6T29VjHxhHqqGE".to_string(),
+                ),
+                network: Network::Ao,
+            },
+            decimals: 6,
+            eip712: None,
+        })
+    }
+});
+
 /// A known USDC deployment as a wrapper around [`TokenDeployment`].
 #[derive(Clone, Debug)]
 pub struct USDCDeployment(pub TokenDeployment);
@@ -360,10 +375,11 @@ impl USDCDeployment {
     }
 
     pub fn by_ao_network(token: &str) -> &'static USDCDeployment {
-        match token {
+        match token.to_uppercase().as_str() {
             "AO" => &AO_TN1,
             "USDA" => &AO_USDA,
-            _ => &AO_TN1
+            "ARIO" => &AO_ARIO,
+            _ => &AO_TN1,
         }
     }
 }
