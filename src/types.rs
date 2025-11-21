@@ -1208,7 +1208,7 @@ pub enum MoneyAmountParseError {
 mod money_amount {
     use super::*;
 
-    pub const MIN_STR: &str = "0.000000000001"; // supports up to 12 decimals for ao tokens support
+    pub const MIN_STR: &str = "0.000000000000000001"; // supports up to 18 decimals for ao tokens support
     pub const MAX_STR: &str = "999999999";
 
     pub static MIN: Lazy<Decimal> =

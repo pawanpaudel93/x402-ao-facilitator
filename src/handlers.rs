@@ -20,6 +20,7 @@ use tracing::instrument;
 use crate::chain::FacilitatorLocalError;
 use crate::chain::ao::{
     AO_TOKEN_ADDRESS, ARIO_TOKEN_ADDRESS, PIXL_TOKEN_ADDRESS, USDA_TOKEN_ADDRESS,
+    WNDR_TOKEN_ADDRESS,
 };
 use crate::facilitator::Facilitator;
 use crate::types::{
@@ -83,7 +84,7 @@ pub async fn get_root() -> impl IntoResponse {
     (
         StatusCode::OK,
         Json(
-            json!({"version": pkg_version, "supported_ao_tokens": {"ao": AO_TOKEN_ADDRESS.to_string(), "ario": ARIO_TOKEN_ADDRESS.to_string(), "usda": USDA_TOKEN_ADDRESS.to_string(), "pixl": PIXL_TOKEN_ADDRESS.to_string()}, "endpoint": "https://hyper-x402.load.network"}),
+            json!({"version": pkg_version, "supported_ao_tokens": {"ao": AO_TOKEN_ADDRESS.to_string(), "ario": ARIO_TOKEN_ADDRESS.to_string(), "usda": USDA_TOKEN_ADDRESS.to_string(), "pixl": PIXL_TOKEN_ADDRESS.to_string(), "wndr": WNDR_TOKEN_ADDRESS.to_string()}, "endpoint": "https://hyper-x402.load.network"}),
         ),
     )
 }

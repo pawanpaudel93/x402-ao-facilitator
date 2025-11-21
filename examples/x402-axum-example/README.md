@@ -11,7 +11,7 @@ This repository comes with a tailored axum example that works with the ao networ
     ));
 ```
 
-it's also possible to define a token struct instance on ao without being tied to $AO as payment token (default instance), by using the by_ao_network function, at the moment only `AO`, `USDA`, `ARIO`, and `PIXL` are supported
+it's also possible to define a token struct instance on ao without being tied to $AO as payment token (default instance), by using the by_ao_network function, at the moment only `AO`, `USDA`, `ARIO`, `PIXL` and `WNDR` are supported
 
 ```rust
     let usda_token = USDCDeployment::by_ao_network("USDA").pay_to(MixedAddress::Offchain(

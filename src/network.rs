@@ -5,6 +5,7 @@
 
 use crate::chain::ao::{
     AO_TOKEN_ADDRESS, ARIO_TOKEN_ADDRESS, PIXL_TOKEN_ADDRESS, USDA_TOKEN_ADDRESS,
+    WNDR_TOKEN_ADDRESS,
 };
 use crate::types::{MixedAddress, TokenAsset, TokenDeployment, TokenDeploymentEip712};
 use alloy::primitives::address;
@@ -333,6 +334,19 @@ static AO_PIXL: Lazy<USDCDeployment> = Lazy::new({
     }
 });
 
+static AO_WNDR: Lazy<USDCDeployment> = Lazy::new({
+    || {
+        USDCDeployment(TokenDeployment {
+            asset: TokenAsset {
+                address: MixedAddress::Offchain(WNDR_TOKEN_ADDRESS.to_string()),
+                network: Network::Ao,
+            },
+            decimals: 18,
+            eip712: None,
+        })
+    }
+});
+
 /// A known USDC deployment as a wrapper around [`TokenDeployment`].
 #[derive(Clone, Debug)]
 pub struct USDCDeployment(pub TokenDeployment);
@@ -390,6 +404,7 @@ impl USDCDeployment {
             "USDA" => &AO_USDA,
             "ARIO" => &AO_ARIO,
             "PIXL" => &AO_PIXL,
+            "WNDR" => &AO_WNDR,
             _ => &AO_TN1,
         }
     }
